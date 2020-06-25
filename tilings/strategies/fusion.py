@@ -27,6 +27,8 @@ from comb_spec_searcher.strategies.constructor import RelianceProfile, SubRecs
 from tilings import GriddedPerm, Tiling
 from tilings.algorithms import ComponentFusion, Fusion
 
+import json
+
 __all__ = ["FusionStrategy", "ComponentFusionStrategy"]
 
 SubGens = Tuple[Callable[..., Iterator[GriddedPerm]], ...]
@@ -528,10 +530,10 @@ class FusionStrategy(Strategy[Tiling, GriddedPerm]):
                 min_right,
             )
         except ValueError as e:
-            print(json.dumps(comb_class.to_jsonable()))
-            print(json.dumps(self.to_jsonable()))
             print(repr(comb_class))
             print(repr(self))
+            print(json.dumps(comb_class.to_jsonable()))
+            print(json.dumps(self.to_jsonable()))
             raise ValueError(e)
 
     def extra_parameters(
