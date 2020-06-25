@@ -519,13 +519,20 @@ class FusionStrategy(Strategy[Tiling, GriddedPerm]):
         child = algo.fused_tiling()
         assert children is None or children == (child,)
         min_left, min_right = algo.min_left_right_points()
-        return FusionConstructor(
-            self._fuse_parameter(comb_class),
-            self.extra_parameters(comb_class, children)[0],
-            *self.left_right_both_sided_parameters(comb_class),
-            min_left,
-            min_right,
-        )
+        try:
+            return FusionConstructor(
+                self._fuse_parameter(comb_class),
+                self.extra_parameters(comb_class, children)[0],
+                *self.left_right_both_sided_parameters(comb_class),
+                min_left,
+                min_right,
+            )
+        except ValueError as e:
+            print(json.dumps(comb_class.to_jsonable()))
+            print(json.dumps(self.to_jsonable()))
+            print(repr(comb_class))
+            print(repr(self))
+            raise ValueError(e)
 
     def extra_parameters(
         self, comb_class: Tiling, children: Optional[Tuple[Tiling, ...]] = None,
